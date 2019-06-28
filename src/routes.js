@@ -9,6 +9,6 @@ routes.post('/users', UserController.store);
 routes.post('/login', SessionController.store);
 
 routes.use(authentication);
-// routes.put('/users', UserController.update);
+routes.put('/users', UserController.update);
 
 export default routes;

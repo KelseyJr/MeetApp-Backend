@@ -1,5 +1,5 @@
 import User from '../models/User';
-import { UserCreated } from '../validations/UserValidation';
+import { UserCreated, UserUpdated } from '../validations/UserValidation';
 
 class UserController {
   async store(req, res) {
@@ -18,6 +18,24 @@ class UserController {
       name,
       email,
       password,
+    });
+  }
+
+  async update(req, res) {
+    if (!(await UserUpdated.isValid(req.body))) {
+      return res.status(400).json({ message: 'Validation fails' });
+    }
+    const { email } = req.body;
+    const user = await User.findByPk(req.userId);
+
+    if (email !== user.email) {
+      return res.status(400).json({ message: 'Email does not match' });
+    }
+    const { id, name } = await user.update(req.body);
+    return res.json({
+      id,
+      name,
+      email,
     });
   }
 }
