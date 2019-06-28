@@ -1,7 +1,12 @@
 import User from '../models/User';
+import { UserCreated } from '../validations/UserValidation';
 
 class UserController {
   async store(req, res) {
+    if (!(await UserCreated.isValid(req.body))) {
+      return res.status(400).json({ message: 'Validation fails' });
+    }
+
     const userExist = User.findOne({ where: { email: req.body.email } });
 
     if (userExist) {
