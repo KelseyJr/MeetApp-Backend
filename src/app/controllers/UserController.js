@@ -29,7 +29,7 @@ class UserController {
     const user = await User.findByPk(req.userId);
 
     if (email !== user.email) {
-      return res.status(400).json({ message: 'Email does not match' });
+      return res.status(401).json({ message: 'Email does not match' });
     }
     const { id, name } = await user.update(req.body);
     return res.json({
