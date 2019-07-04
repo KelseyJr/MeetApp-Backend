@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import { isAfter } from 'date-fns';
 
 class Meetup extends Model {
   static init(sequelize) {
@@ -8,6 +9,12 @@ class Meetup extends Model {
         description: Sequelize.STRING,
         localization: Sequelize.STRING,
         date: Sequelize.DATE,
+        past: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return isAfter(new Date(), this.date);
+          },
+        },
       },
       {
         sequelize,
